@@ -28,7 +28,7 @@ def manage_mail(res, rech_id, title, user_name):
 
 
 def mail_sender(myhtml, user, title):
-    key = 'key-1366fa84b4631071e22cc94d3d61e86a'
+    key = 'YOUR MAILGUN KEY HERE'
     request_url = 'https://api.mailgun.net/v3/sandbox7557916c81ae483dbc9551350d247d55.mailgun.org/messages'
     request = requests.post(
         request_url,
