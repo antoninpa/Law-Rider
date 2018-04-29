@@ -162,4 +162,4 @@ def legifr_search_check(name, m_id, mail):
     return errors
 
 if __name__ == '__main__':
-    compare_html()
+    print("running misc.py")
