@@ -8,7 +8,8 @@ from AppliWeb import operations as op
 from AppliWeb import app, SqliteDatabase
 from flask import render_template, request
 
-database = SqliteDatabase("/home/antoninx_v2/Bureau/SpiderOak Hive/AppliWeb/pw_DDB.sqlite")
+
+database = SqliteDatabase("/full/path/to/pw_DDB.sqlite")
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -30,22 +31,10 @@ def accueil():
 def about():
     return render_template('about.html')
     
+
 @app.route('/legal')
 def legal():
     return render_template('legal.html')
-
-'''
-@app.route('/cgu/<company>')
-def cgu(company):
-    """
-    TO DO : écrire les templates dans templates/CGU
-    pour les rendre accessibles facilement
-    :param company:
-    :return:
-    """
-    view = 'CGU/'+company+'.html'  # in render_template(view, x=x)
-    return render_template(view)
-'''
 
 
 @app.route('/test')
@@ -72,22 +61,6 @@ def nvlle_rech():
                 return render_template('accueil.html', success=misc.success_search_msg())
             else:
                 return render_template('nvlle-rech.html', error=error)
-        # INSTITUTIONS
-        elif request.form.get('type_rech') == 'institutions':
-            error = misc.G_mail_check(request.form.get('mail'))
-            if not error:
-                op.new_instit_rech(request.form.get('selecter'), request.form.get('mail'))
-            else:
-                return render_template('nvlle-rech.html', error=error)
-        """
-        # CGU
-        elif request.form.get('type_rech') == 'cgu':
-            error = misc.G_mail_check(request.form.get('mail'))
-            if not error:
-                op.new_cgu_rech(request.form.get('selecter'), request.form.get('mail'))
-            else:
-                return render_template('nvlle-rech.html', error=error)
-        """
         return render_template('nvlle-rech.html')
 
 
