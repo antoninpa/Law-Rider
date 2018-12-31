@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+
+{% block container %}
+
+<main class="wrapper">
+    <section class="container">
+
+
+        <div class="row">
+            <div class="column column-10"></div>
+            <div class="column">
+                <img src="{{ url_for('static', filename='./logo-1.png') }}"
+                     style="max-width:300px; max_height:64px;margin-left: 15em:">
+            </div>
+            <div class="column column-10"></div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <p>
+                    <img src="{{ url_for('static', filename='./lowriders-1.jpeg') }}">
+                </p>
+            </div>
+        </div>
+
+
+        <!--- SEARCH FIELD --->
+        <div class="row">
+            <div class="column column-10"></div>
+            <div class="column" style="text-align: justify;">
+
+                <p>LAWRIDER est un <b>générateur de flux RSS des lois et textes réglementaires parus au Journal
+                    officiel</b> : le flux est mis à jour à chaque nouvelle mention de la loi ou du réglement qui vous
+                    intéresse au JO.</p>
+
+                <p>Le flux RSS est le meilleur moyen d'être informé de la publication d'un contenu, de manière
+                    non-intrusive. Pour plus d'informations sur les flux RSS rendez-vous <a
+                            href="{{ url_for('about', _anchor='flux-rss') }}">ici</a>.</p>
+
+
+                <p>Entrez dans le formulaire le <a
+                        href="https://www.legifrance.gouv.fr/Aide/Utilisation/Textes-legislatifs-et-reglementaires-recherche-simple#ancre1_1_1_2">numéro
+                    du texte</a> qui vous intéresse.
+                    Si aucun flux n'est enregistré pour le texte il sera créé automatiquement.</p>
+                {% if errors %}
+                <p style="color: red; text-align: center;"><b>Attention !!</b> Le format de l'identifiant n'est pas
+                    correct. Réessayez encore !</p>
+                {% endif %}
+            </div>
+            <div class="column column-10"></div>
+        </div>
+
+
+        <form action="{{ url_for('accueil') }}" method="POST">
+            <fieldset>
+
+                {% autoescape false %}
+                {% if feed_names %}
+                <br>
+                <div class="row">
+                    <div class="column">Lequel de ces textes vous intéresse ?</div>
+                </div>
+                <div class="row">
+                    <div class="column column-10"></div>
+                    <div class="column">
+                        <table>
+                            <tbody>
+                            {% for el in feed_names %}
+                            <tr>
+                                <td style="text-align: right; border-bottom-style: none; padding: 0.4rem 0.4rem; border-color: black">
+                                    <input style="margin-bottom: 0px;" name="feed_name" type="radio" id="confirmField"
+                                           value="{{ el }}">
+                                    <input type="text" hidden value="{{ id_loi }}" aria-required="true" name="id_loi">
+                                </td>
+                                <td style="border-bottom-style: none; padding: 0.4rem 0.4rem;">
+                                    {{ el }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="column"></div>
+                    <div class="column">
+                        <input style="width:100%; color: black; border-color: black" class="button button-outline"
+                               formaction="{{ url_for('accueil') }}"
+                               type="submit"
+                               value="Rechercher">
+                    </div>
+                    <div class="column"></div>
+
+                </div>
+
+                {% else %}
+
+                <div class="row">
+                    <div class="column"></div>
+                    <div class="column">
+                        <input type="text" placeholder="Numéro du texte" pattern="(\d{2,4}-\d{1,4})"
+                               required="required" aria-required="true" name="id_loi">
+                    </div>
+                    <div class="column"></div>
+                </div>
+
+                <div class="row">
+                    <div class="column"></div>
+                    <div class="column">
+                        <input style="width:100%; color: black; border-color: black" class="button button-outline"
+                               formaction="{{ url_for('accueil') }}"
+                               type="submit"
+                               value="Rechercher">
+                    </div>
+                    <div class="column"></div>
+
+                </div>
+
+                {% endif %}
+                {% endautoescape %}
+
+                <br>
+            </fieldset>
+        </form>
+
+
+        <!--- CARDS  --->
+
+
+        {% if my_data %}
+
+        {% autoescape true %}
+
+        {% if my_data|length % 2 == 0 %}
+
+        {% for el in my_data %}
+
+        {% if el[4] % 2 != 0 %}
+
+        <div class="row">
+
+            <div class="column">
+                <div class="card">
+                    <a id="{{ el[0] }}"></a>
+
+                    <div class="card-header">
+                        <table style="margin-bottom: 0px;">
+                            <tr>
+                                <td>
+                                    <b>{{ el[1] }}</b>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="card-content">
+                        <i>Dernier résultat :</i><br><a href="{{ el[3] }}">{{ el[2] }}.</a>
+                    </div>
+
+                    <div class="card-footer">
+                        <a class="button button-black" href="{{ '/feeds/rss/%s' %el[0]|urlencode }}">
+                            RSS
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="column">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <table style="margin-bottom: 0px;">
+                            <tr>
+                                <td>
+                                    <b>{{ el[1] }}</b>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="card-content">
+                        <i>Dernier résultat :</i><br><a href="{{ el[3] }}">{{ el[2] }}.</a>
+                    </div>
+
+                    <div class="card-footer">
+                        <a class="button button-black" href="{{ '/feeds/rss/%s' %el[0]|urlencode }}">
+                            RSS
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+        {% endfor %}
+        {% else %}
+
+        {% for el in my_data %}
+
+        {% if loop.last %}
+
+        <div class="row">
+
+            <div class="column">
+
+                <div class="card">
+                    <a id="{{ el[0] }}"></a>
+                    <div class="card-header">
+                        <table style="margin-bottom: 0px;">
+                            <tr>
+                                <td>
+                                    <b>{{ el[1] }}</b>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="card-content">
+                        <i>Dernier résultat :</i><br><a href="{{ el[3] }}">{{ el[2] }}.</a>
+                    </div>
+                    <div class="card-footer">
+                        <a class="button button-black" href="{{ '/feeds/rss/%s' %el[0]|urlencode }}">
+                            RSS
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="column"></div>
+
+        </div>
+
+        {% elif el[4] % 2 != 0 %}
+
+        <div class="row">
+
+            <div class="column">
+
+                <div class="card">
+                    <a id="{{ el[0] }}"></a>
+                    <div class="card-header">
+                        <table style="margin-bottom: 0px;">
+                            <tr>
+                                <td>
+                                    <b>{{ el[1] }}</b>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="card-content">
+                        <i>Dernier résultat :</i><br><a href="{{ el[3] }}">{{ el[2] }}.</a>
+                    </div>
+                    <div class="card-footer">
+                        <a class="button button-black" href="{{ '/feeds/rss/%s' %el[0]|urlencode }}">
+                            RSS
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="column">
+
+                <div class="card">
+                    <a id="{{ el[0] }}"></a>
+                    <div class="card-header">
+                        <table style="margin-bottom: 0px;">
+                            <tr>
+                                <td>
+                                    <b>{{ el[1] }}</b>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="card-content">
+                        <i>Dernier résultat :</i><br><a href="{{ el[3] }}">{{ el[2] }}.</a>
+                    </div>
+                    <div class="card-footer">
+                        <a class="button button-black" href="{{ '/feeds/rss/%s' %el[0]|urlencode }}">
+                            RSS
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        {% endif %}
+        {% endautoescape %}
+        {% endif %}
+
+        <div class="row">
+            <div class="column">
+                <div style="flex-shrink: 0; margin-bottom: 0rem; margin-top: 2rem; text-align: center;" class="footer">
+                    <a href="#">gh</a>
+                    -
+                    <a href="{{ url_for('about') }}">about</a>
+
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+</main>
+
+
+{% endblock %}
