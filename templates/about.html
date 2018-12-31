@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block container %}
+
+<main class="wrapper">
+    <section class="container">
+
+
+        <div class="row">
+            <div class="column">
+                <a href="{{ url_for('accueil') }}"><img src="{{ url_for('static', filename='./logo-1.png') }}"
+                                                        style="max-width:300px; max_height:64px;"></a>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div class="row">
+            <div class="column">
+                <h3>Fonctionnement</h3>
+                <p>LAWRIDER génère - s'il n'existe pas - un flux RSS pour un texte qui vous intéresse. Le flux est
+                    constitué des textes parus au Journal officiel faisant mention de ce texte. Les données du flux
+                    sont issues de la base Légifrance. Ils sont hébergés sur le site et mis à jour toutes les heures.</p>
+                <p>Le code source est disponible sur <a href="#">github.com/pantonin/</a>. Le format des flux est le RSS 2.0. Le format atom sera intégré ultérieurement.</p>
+            </div>
+        </div>
+<br>
+        <div class="row">
+            <div class="column">
+                <a id="flux-rss"></a>
+                <h3>Flux RSS</h3>
+                <p>Un flux RSS est un format de données utilisé pour la syndication de contenus. Les flux RSS existent
+                    depuis 1999 et s'ils <a href="https://www.theverge.com/2013/3/14/4105006/why-rss-still-matters">n'en
+                        finissent pas de mourir</a> c'est qu'ils sont particulièrement utiles : système <i>pull</i>
+                    plutôt que <i>push</i>, simple, utile et efficace.</p>
+                <p>Les flux RSS peuvent être lus sur un client mail (<a href="https://support.office.com/fr-fr/article/s-abonner-%C3%A0-un-flux-rss-73c6e717-7815-4594-98e5-81fa369e951c">Outlook</a> ou
+                <a href="https://support.mozilla.org/fr/kb/comment-s-abonner-aux-flux-de-nouvelles-et-blogs">Thunderbird</a>)
+                    mais il est aussi possible - et recommandé - d'utiliser un logiciel spécifique. À cet égard je recommande
+                    <a href="https://quiterss.org/en">QuiteRSS</a> qui est simple d'utilisation, open-source et disponible sur toutes les plateformes.</p>
+            <br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="column">
+                <p>LAWRIDER est développé par Antonin Paillet.</p>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+
+{% endblock %}
