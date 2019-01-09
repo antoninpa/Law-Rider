@@ -182,10 +182,10 @@ def feed_gen(id_loi, res_list):
     fg = FeedGenerator()
     fg.id(id_loi)
     fg.title(id_loi)
-    fg.author({'name': 'law-rider.fr', 'email': 'hello@law-rider.fr'})
-    fg.link(href='https://www.law-rider.fr', rel='alternate')
+    fg.author({'name': 'lawrider.fr', 'email': 'antoninpa@gmail.com'})
+    fg.link(href='https://www.lawrider.fr', rel='alternate')
     fg.subtitle('Suivez les recensions d\'une loi.')
-    fg.link(href='https://www.law-rider.fr', rel='self')
+    fg.link(href='https://www.lawrider.fr', rel='self')
     fg.language('fr')
 
     for el in res_list:
